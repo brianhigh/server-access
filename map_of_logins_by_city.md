@@ -2,6 +2,19 @@
 Brian High  
 12/03/2015  
 
+## Server logins
+
+A "login" is merely the event of a computer account logging into a computer. 
+It is an approximation of amount of usage, but will under-represent users 
+who stay logged in for a long duration of time. These users may, in fact, use 
+the resource more than a user who connects frequently, but for short periods.
+
+We will explore data obtained from logfile analysis of a server used at the
+University of Washington for remote access to computing resources. The data
+show counts of logins for general locations, such as cities and the internet
+service providers who provide address blocks for end-users. Any personally 
+identifiable information (PII) has already been scrubbed from the data files. 
+
 ## Set up our environment
 
 Set document rendering options.
@@ -29,6 +42,8 @@ for (pkg in c("dplyr", "pander", "ggmap")) {
 ```
 
 ## Read the data
+
+Load the city login counts from a plain-text CSV file.
 
 
 ```r
@@ -132,6 +147,32 @@ ggmap(google_basemap) + geom_point(data = cities,
 ```
 
 ![](map_of_logins_by_city_files/figure-html/make_google_map-1.png) 
+
+## Make a density map
+
+Let's zoom in on logins from the Puget Sound area with a density map. The data 
+file we will use has login counts and geolocations for the IP address blocks 
+used by the hosts accessing the server. 
+
+The geolocations correspond to the locations of the internet access providers, 
+not the actual locations of the end-users of the server.
+
+
+```r
+addr <- read.csv("addr.csv")
+pslatlon <- geocode("Puget Sound")
+psarea <- subset(addr, 
+                 pslatlon$lon-2 <= longitude & longitude <= pslatlon$lon+2 &
+                 pslatlon$lat-.5 <= latitude & latitude <=  pslatlon$lat+.5
+)
+
+qmplot(longitude, latitude, data = psarea, maptype = "toner-lite", 
+       geom = "density2d", color = I("red"))
+```
+
+![](map_of_logins_by_city_files/figure-html/puget_sound_density_map-1.png) 
+
+## Sources
 
 Map and geocoding sources: 
 
