@@ -134,10 +134,7 @@ pick up some of the locations in the rest of North America and Central America.
 
 
 ```r
-# Center the map on Kansas
-kansas <- geocode("Kansas")
-google_basemap <- get_map(location = c(lon = kansas$lon, lat = kansas$lat), 
-                          zoom = 4, scale=2)
+google_basemap <- get_map(location = "Kansas", zoom = 4)
 
 ggmap(google_basemap) + geom_point(data = cities, 
                                    aes(x = longitude, y = latitude,
@@ -171,6 +168,35 @@ qmplot(longitude, latitude, data = psarea, maptype = "toner-lite",
 ```
 
 ![](map_of_logins_by_city_files/figure-html/puget_sound_density_map-1.png) 
+
+## A density map with more color
+
+Let's zoom in a little on the University of Washington's Seattle campus and 
+make a density plot with a color gradient over a color background map.
+
+
+```r
+pslatlon <- geocode("University of Washington, Seattle, WA")
+
+psarea <- subset(addr, 
+                 pslatlon$lon-.14 <= longitude & longitude <= pslatlon$lon+.14 &
+                 pslatlon$lat-.14 <= latitude & latitude <= pslatlon$lat+.14
+)
+
+ps_basemap <- get_map(location = "University of Washington, Seattle, WA", 
+                      zoom = 11)
+
+ggmap(ps_basemap, extent = "device") + 
+    geom_density2d(data = psarea, 
+        aes(x = longitude, y = latitude), size = 0.3) + 
+    stat_density2d(data = psarea, 
+        aes(x = longitude, y = latitude, fill = ..level.., alpha = ..level..), 
+        size = 0.01, bins = 16, geom = "polygon") + 
+    scale_fill_gradient(low = "green", high = "red") + 
+    scale_alpha(range = c(0, 0.3), guide = FALSE)
+```
+
+![](map_of_logins_by_city_files/figure-html/puget_sound_color_density_map-1.png) 
 
 ## Sources
 
