@@ -102,6 +102,10 @@ are from the US.
 We can center the map on the center of the US (Kansas) and zoom so that we 
 pick up some of the locations in the rest of North America and Central America.
 
+```{r register_google_api_key, echo=FALSE}
+source("register_google_api_key.R")
+```
+
 ```{r make_google_map, warning=FALSE, message=FALSE}
 google_basemap <- get_map(location = "Kansas", zoom = 4)
 

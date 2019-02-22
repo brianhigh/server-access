@@ -1,6 +1,15 @@
-# Map of Server Logins
-Brian High  
-12/03/2015  
+---
+title: "Map of Server Logins"
+author: "Brian High"
+date: "12/03/2015"
+output:
+  html_document:
+    keep_md: yes
+  pdf_document:
+    fig_caption: no
+    fig_height: 6
+    fig_width: 9
+---
 
 ## Server logins
 
@@ -62,18 +71,18 @@ cities[,1:4] %>% head(10) %>% pandoc.table(style='rmarkdown')
 
 
 
-|      city      |  region  |  country  |  logins  |
-|:--------------:|:--------:|:---------:|:--------:|
-|    Seattle     |    WA    |    US     |   746    |
-|  Port Orchard  |    WA    |    US     |    45    |
-|  Cedar Crest   |    NM    |    US     |    30    |
-|     Duvall     |    WA    |    US     |    28    |
-|      Kent      |    WA    |    US     |    26    |
-|    Arcadia     |    CA    |    US     |    25    |
-|    Portland    |    OR    |    US     |    16    |
-|    Redmond     |    WA    |    US     |    14    |
-|   Las Vegas    |    NV    |    US     |    10    |
-| Salt Lake City |    UT    |    US     |    10    |
+|      city      | region | country | logins |
+|:--------------:|:------:|:-------:|:------:|
+|    Seattle     |   WA   |   US    |  746   |
+|  Port Orchard  |   WA   |   US    |   45   |
+|  Cedar Crest   |   NM   |   US    |   30   |
+|     Duvall     |   WA   |   US    |   28   |
+|      Kent      |   WA   |   US    |   26   |
+|    Arcadia     |   CA   |   US    |   25   |
+|    Portland    |   OR   |   US    |   16   |
+|    Redmond     |   WA   |   US    |   14   |
+|   Las Vegas    |   NV   |   US    |   10   |
+| Salt Lake City |   UT   |   US    |   10   |
 
 Most logins are from Seattle, but what is the percentage of Seattle logins?
 
@@ -102,12 +111,12 @@ countries %>% head(10) %>% pandoc.table(style='rmarkdown')
 
 
 
-|  country  |  logins  |
-|:---------:|:--------:|
-|    US     |   1051   |
-|    CA     |    6     |
-|    HN     |    3     |
-|    ZA     |    1     |
+| country | logins |
+|:-------:|:------:|
+|   US    |  1051  |
+|   CA    |   6    |
+|   HN    |   3    |
+|   ZA    |   1    |
 
 Find percent of logins from the US.
 
@@ -133,6 +142,8 @@ We can center the map on the center of the US (Kansas) and zoom so that we
 pick up some of the locations in the rest of North America and Central America.
 
 
+
+
 ```r
 google_basemap <- get_map(location = "Kansas", zoom = 4)
 
@@ -143,7 +154,7 @@ ggmap(google_basemap) + geom_point(data = cities,
     guides(fill=FALSE, alpha=FALSE, size=FALSE)
 ```
 
-![](map_of_logins_by_city_files/figure-html/make_google_map-1.png) 
+![](map_of_logins_by_city_files/figure-html/make_google_map-1.png)<!-- -->
 
 ## Make a density map
 
@@ -167,7 +178,7 @@ qmplot(longitude, latitude, data = psarea, maptype = "toner-lite",
        geom = "density2d", color = I("red"))
 ```
 
-![](map_of_logins_by_city_files/figure-html/puget_sound_density_map-1.png) 
+![](map_of_logins_by_city_files/figure-html/puget_sound_density_map-1.png)<!-- -->
 
 ## A density map with more color
 
@@ -196,7 +207,7 @@ ggmap(ps_basemap, extent = "device") +
     scale_alpha(range = c(0, 0.3), guide = FALSE)
 ```
 
-![](map_of_logins_by_city_files/figure-html/puget_sound_color_density_map-1.png) 
+![](map_of_logins_by_city_files/figure-html/puget_sound_color_density_map-1.png)<!-- -->
 
 ## Sources
 
